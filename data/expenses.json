@@ -1,0 +1,14 @@
+{
+  "expenses": [],
+  "categories": [
+    "Food",
+    "Transport",
+    "Entertainment",
+    "Bills",
+    "Shopping",
+    "Healthcare",
+    "Other",
+    "Travel",
+    "Church"
+  ]
+}
