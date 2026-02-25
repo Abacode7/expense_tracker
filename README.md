@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker
 
-## Getting Started
+A simple expense tracking application built with Next.js 14+, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Features
+
+- Add, edit, and delete expenses
+- Categorize expenses with default and custom categories
+- View total spending across all expenses
+- Expenses sorted by date (most recent first)
+- Persistent storage using JSON file
+
+## Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev     # Start development server at http://localhost:3000
+npm run build   # Build for production
+npm run start   # Start production server
+npm run lint    # Run ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API Reference
 
-## Learn More
+### Expenses
 
-To learn more about Next.js, take a look at the following resources:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/expenses | List all expenses |
+| POST | /api/expenses | Create a new expense |
+| GET | /api/expenses/:id | Get a single expense |
+| PUT | /api/expenses/:id | Update an expense |
+| DELETE | /api/expenses/:id | Delete an expense |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Categories
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/categories | List all categories |
+| POST | /api/categories | Add a custom category |
 
-## Deploy on Vercel
+See [docs/API.md](docs/API.md) for detailed API documentation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+├── api/                  # API routes
+│   ├── expenses/         # Expense CRUD operations
+│   │   ├── route.ts      # GET all, POST new
+│   │   └── [id]/
+│   │       └── route.ts  # GET, PUT, DELETE by id
+│   └── categories/
+│       └── route.ts      # GET all, POST new
+├── page.tsx              # Main page (client component)
+├── layout.tsx            # Root layout
+└── globals.css           # Global styles
+components/
+├── ExpenseForm.tsx       # Create/edit expense form
+├── ExpenseList.tsx       # Expense list display
+├── ExpenseItem.tsx       # Single expense row
+└── TotalSpending.tsx     # Total calculation display
+lib/
+├── storage.ts            # JSON file read/write utilities
+└── types.ts              # TypeScript interfaces
+data/
+└── expenses.json         # Data persistence file
+```
+
+## Data Model
+
+### Expense
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | string | Unique identifier (timestamp + random string) |
+| amount | number | Expense amount in dollars |
+| category | string | Expense category |
+| description | string | Description of the expense |
+| date | string | Date of expense (ISO format YYYY-MM-DD) |
+| createdAt | string | Creation timestamp (ISO format) |
+
+### Default Categories
+
+- Food
+- Transport
+- Entertainment
+- Bills
+- Shopping
+- Healthcare
+- Other
+
+Custom categories can be added via the UI or API.
+
+## Tech Stack
+
+- **Framework:** Next.js 16.1.6 (App Router)
+- **Language:** TypeScript 5
+- **Styling:** Tailwind CSS 4
+- **Runtime:** React 19.2.3
+
+## License
+
+MIT
