@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Expense } from '@/lib/types';
+import CategorySelect from './CategorySelect';
 
 interface ExpenseFormProps {
   categories: string[];
@@ -11,37 +12,53 @@ interface ExpenseFormProps {
   onCancelEdit?: () => void;
 }
 
-export default function ExpenseForm({
+function getTodayDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
+interface FormState {
+  amount: string;
+  category: string;
+  description: string;
+  date: string;
+}
+
+function getInitialState(expense: Expense | null | undefined): FormState {
+  if (expense) {
+    return {
+      amount: expense.amount.toString(),
+      category: expense.category,
+      description: expense.description,
+      date: expense.date,
+    };
+  }
+  return {
+    amount: '',
+    category: '',
+    description: '',
+    date: getTodayDate(),
+  };
+}
+
+function ExpenseFormInner({
   categories,
   onSubmit,
   onAddCategory,
   editingExpense,
   onCancelEdit,
 }: ExpenseFormProps) {
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
-  const [newCategory, setNewCategory] = useState('');
-  const [showAddCategory, setShowAddCategory] = useState(false);
+  const initialState = getInitialState(editingExpense);
+  const [amount, setAmount] = useState(initialState.amount);
+  const [category, setCategory] = useState(initialState.category);
+  const [description, setDescription] = useState(initialState.description);
+  const [date, setDate] = useState(initialState.date);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (editingExpense) {
-      setAmount(editingExpense.amount.toString());
-      setCategory(editingExpense.category);
-      setDescription(editingExpense.description);
-      setDate(editingExpense.date);
-    } else {
-      resetForm();
-    }
-  }, [editingExpense]);
 
   const resetForm = () => {
     setAmount('');
     setCategory('');
     setDescription('');
-    setDate(new Date().toISOString().split('T')[0]);
+    setDate(getTodayDate());
     setError('');
   };
 
@@ -60,34 +77,19 @@ export default function ExpenseForm({
       return;
     }
 
-    onSubmit({
-      amount: parsedAmount,
-      category,
-      description,
-      date,
-    });
+    onSubmit({ amount: parsedAmount, category, description, date });
 
     if (!editingExpense) {
       resetForm();
     }
   };
 
-  const handleAddCategory = () => {
-    if (newCategory.trim()) {
-      onAddCategory(newCategory.trim());
-      setNewCategory('');
-      setShowAddCategory(false);
-    }
-  };
-
-  useEffect(() => {
-    setDate(new Date().toISOString().split('T')[0]);
-  }, []);
+  const isEditing = Boolean(editingExpense);
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">
-        {editingExpense ? 'Edit Expense' : 'Add New Expense'}
+        {isEditing ? 'Edit Expense' : 'Add New Expense'}
       </h2>
 
       {error && (
@@ -112,50 +114,12 @@ export default function ExpenseForm({
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Category
-          </label>
-          <div className="flex gap-2">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-            >
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={() => setShowAddCategory(!showAddCategory)}
-              className="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50"
-            >
-              +
-            </button>
-          </div>
-          {showAddCategory && (
-            <div className="mt-2 flex gap-2">
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                placeholder="New category name"
-              />
-              <button
-                type="button"
-                onClick={handleAddCategory}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-              >
-                Add
-              </button>
-            </div>
-          )}
-        </div>
+        <CategorySelect
+          categories={categories}
+          value={category}
+          onChange={setCategory}
+          onAddCategory={onAddCategory}
+        />
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -187,9 +151,9 @@ export default function ExpenseForm({
             type="submit"
             className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {editingExpense ? 'Update Expense' : 'Add Expense'}
+            {isEditing ? 'Update Expense' : 'Add Expense'}
           </button>
-          {editingExpense && onCancelEdit && (
+          {isEditing && onCancelEdit && (
             <button
               type="button"
               onClick={onCancelEdit}
@@ -202,4 +166,10 @@ export default function ExpenseForm({
       </div>
     </form>
   );
+}
+
+export default function ExpenseForm(props: ExpenseFormProps) {
+  // Use key to reset form state when editingExpense changes
+  const key = props.editingExpense?.id ?? 'new';
+  return <ExpenseFormInner key={key} {...props} />;
 }

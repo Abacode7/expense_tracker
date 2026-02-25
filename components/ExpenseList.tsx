@@ -1,6 +1,7 @@
 'use client';
 
 import { Expense } from '@/lib/types';
+import { EmptyListIcon } from './icons';
 import ExpenseItem from './ExpenseItem';
 
 interface ExpenseListProps {
@@ -8,6 +9,12 @@ interface ExpenseListProps {
   onEdit: (expense: Expense) => void;
   onDelete: (id: string) => void;
   loading?: boolean;
+}
+
+function sortByDateDescending(expenses: Expense[]): Expense[] {
+  return [...expenses].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 }
 
 export default function ExpenseList({ expenses, onEdit, onDelete, loading }: ExpenseListProps) {
@@ -23,17 +30,13 @@ export default function ExpenseList({ expenses, onEdit, onDelete, loading }: Exp
   if (expenses.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
-        <svg className="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-        </svg>
+        <EmptyListIcon className="w-16 h-16 mx-auto text-gray-300" />
         <p className="mt-4 text-gray-500">No expenses yet. Add your first expense above!</p>
       </div>
     );
   }
 
-  const sortedExpenses = [...expenses].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const sortedExpenses = sortByDateDescending(expenses);
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
