@@ -64,7 +64,16 @@ components/
 ├── ExpenseForm.tsx       # Create/edit expense form
 ├── ExpenseList.tsx       # Expense list display
 ├── ExpenseItem.tsx       # Single expense row
-└── TotalSpending.tsx     # Total calculation display
+├── CategorySelect.tsx    # Category dropdown with add new
+├── TotalSpending.tsx     # Total calculation display
+└── icons/                # Reusable SVG icon components
+    ├── EditIcon.tsx
+    ├── DeleteIcon.tsx
+    ├── EmptyListIcon.tsx
+    └── index.ts
+hooks/
+├── useExpenses.ts        # Expense CRUD state management
+└── useCategories.ts      # Category state management
 lib/
 ├── storage.ts            # JSON file read/write utilities
 └── types.ts              # TypeScript interfaces

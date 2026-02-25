@@ -1,8 +1,14 @@
 'use client';
 
+/**
+ * Custom hook for managing expense CRUD operations.
+ * Provides state management and API integration for expenses.
+ * @module hooks/useExpenses
+ */
 import { useState, useCallback } from 'react';
 import { Expense } from '@/lib/types';
 
+/** Input type for creating or updating an expense (without generated fields) */
 export type ExpenseInput = Omit<Expense, 'id' | 'createdAt'>;
 
 interface UseExpensesReturn {
@@ -16,6 +22,12 @@ interface UseExpensesReturn {
   deleteExpense: (id: string) => Promise<boolean>;
 }
 
+/**
+ * Hook for managing expense state and CRUD operations.
+ * @returns Object containing expense state and action functions
+ * @example
+ * const { expenses, loading, addExpense } = useExpenses();
+ */
 export function useExpenses(): UseExpensesReturn {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);

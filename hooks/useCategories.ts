@@ -1,7 +1,13 @@
 'use client';
 
+/**
+ * Custom hook for managing category state and operations.
+ * Provides state management and API integration for categories.
+ * @module hooks/useCategories
+ */
 import { useState, useCallback } from 'react';
 
+/** Return type for the useCategories hook */
 interface UseCategoriesReturn {
   categories: string[];
   error: string;
@@ -10,6 +16,12 @@ interface UseCategoriesReturn {
   addCategory: (category: string) => Promise<boolean>;
 }
 
+/**
+ * Hook for managing category state and operations.
+ * @returns Object containing category state and action functions
+ * @example
+ * const { categories, addCategory } = useCategories();
+ */
 export function useCategories(): UseCategoriesReturn {
   const [categories, setCategories] = useState<string[]>([]);
   const [error, setError] = useState('');
