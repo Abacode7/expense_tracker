@@ -1,12 +1,25 @@
+/**
+ * Expense API route handlers for listing and creating expenses.
+ * @module app/api/expenses/route
+ */
 import { NextResponse } from 'next/server';
 import { readData, writeData, generateId } from '@/lib/storage';
 import { Expense } from '@/lib/types';
 
+/**
+ * GET /api/expenses - Returns all expenses.
+ * @returns JSON array of all expenses
+ */
 export async function GET() {
   const data = readData();
   return NextResponse.json(data.expenses);
 }
 
+/**
+ * POST /api/expenses - Creates a new expense.
+ * @param request - The incoming request with expense data
+ * @returns The created expense with generated id and createdAt
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();

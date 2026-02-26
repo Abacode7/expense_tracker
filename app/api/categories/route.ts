@@ -1,11 +1,24 @@
+/**
+ * Category API route handlers for listing and adding categories.
+ * @module app/api/categories/route
+ */
 import { NextResponse } from 'next/server';
 import { readData, writeData } from '@/lib/storage';
 
+/**
+ * GET /api/categories - Returns all categories.
+ * @returns JSON array of all category names
+ */
 export async function GET() {
   const data = readData();
   return NextResponse.json(data.categories);
 }
 
+/**
+ * POST /api/categories - Adds a new custom category.
+ * @param request - The incoming request with category name
+ * @returns The added category name
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();

@@ -1,7 +1,13 @@
 'use client';
 
+/**
+ * TotalSpending component for displaying the sum of all expenses.
+ * @module components/TotalSpending
+ */
+
 import { Expense } from '@/lib/types';
 
+/** Props for the TotalSpending component */
 interface TotalSpendingProps {
   expenses: Expense[];
 }

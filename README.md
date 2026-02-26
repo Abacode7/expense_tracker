@@ -44,7 +44,12 @@ npm run lint    # Run ESLint
 | GET | /api/categories | List all categories |
 | POST | /api/categories | Add a custom category |
 
-See [docs/API.md](docs/API.md) for detailed API documentation.
+## Documentation
+
+- [API Reference](docs/API.md) - Detailed API endpoint documentation
+- [Components](docs/COMPONENTS.md) - React component documentation
+- [Hooks](docs/HOOKS.md) - Custom hooks documentation
+- [Architecture](docs/ARCHITECTURE.md) - System architecture overview
 
 ## Project Structure
 

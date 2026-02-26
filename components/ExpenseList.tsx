@@ -1,9 +1,15 @@
 'use client';
 
+/**
+ * ExpenseList component for displaying a list of expenses.
+ * @module components/ExpenseList
+ */
+
 import { Expense } from '@/lib/types';
 import { EmptyListIcon } from './icons';
 import ExpenseItem from './ExpenseItem';
 
+/** Props for the ExpenseList component */
 interface ExpenseListProps {
   expenses: Expense[];
   onEdit: (expense: Expense) => void;

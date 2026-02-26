@@ -1,7 +1,13 @@
 'use client';
 
+/**
+ * CategorySelect component for selecting or adding expense categories.
+ * @module components/CategorySelect
+ */
+
 import { useState } from 'react';
 
+/** Props for the CategorySelect component */
 interface CategorySelectProps {
   categories: string[];
   value: string;

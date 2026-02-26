@@ -1,8 +1,14 @@
 'use client';
 
+/**
+ * ExpenseItem component for displaying a single expense entry.
+ * @module components/ExpenseItem
+ */
+
 import { Expense } from '@/lib/types';
 import { EditIcon, DeleteIcon } from './icons';
 
+/** Props for the ExpenseItem component */
 interface ExpenseItemProps {
   expense: Expense;
   onEdit: (expense: Expense) => void;

@@ -1,10 +1,21 @@
+/**
+ * Single expense API route handlers for CRUD operations by ID.
+ * @module app/api/expenses/[id]/route
+ */
 import { NextResponse } from 'next/server';
 import { readData, writeData } from '@/lib/storage';
 
+/** Route parameters containing the expense ID */
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * GET /api/expenses/:id - Returns a single expense by ID.
+ * @param request - The incoming request
+ * @param params - Route parameters containing the expense ID
+ * @returns The expense if found, 404 otherwise
+ */
 export async function GET(request: Request, { params }: RouteParams) {
   const { id } = await params;
   const data = readData();
@@ -17,6 +28,12 @@ export async function GET(request: Request, { params }: RouteParams) {
   return NextResponse.json(expense);
 }
 
+/**
+ * PUT /api/expenses/:id - Updates an existing expense.
+ * @param request - The incoming request with updated fields
+ * @param params - Route parameters containing the expense ID
+ * @returns The updated expense if found, 404 otherwise
+ */
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
@@ -48,6 +65,12 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 }
 
+/**
+ * DELETE /api/expenses/:id - Deletes an expense by ID.
+ * @param request - The incoming request
+ * @param params - Route parameters containing the expense ID
+ * @returns Success response if deleted, 404 if not found
+ */
 export async function DELETE(request: Request, { params }: RouteParams) {
   const { id } = await params;
   const data = readData();

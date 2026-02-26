@@ -1,9 +1,15 @@
 'use client';
 
+/**
+ * ExpenseForm component for creating and editing expenses.
+ * @module components/ExpenseForm
+ */
+
 import { useState } from 'react';
 import { Expense } from '@/lib/types';
 import CategorySelect from './CategorySelect';
 
+/** Props for the ExpenseForm component */
 interface ExpenseFormProps {
   categories: string[];
   onSubmit: (expense: Omit<Expense, 'id' | 'createdAt'>) => void;

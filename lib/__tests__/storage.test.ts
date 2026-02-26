@@ -12,13 +12,13 @@ describe('readData', () => {
   let existsSyncSpy: ReturnType<typeof vi.spyOn>;
   let readFileSyncSpy: ReturnType<typeof vi.spyOn>;
   let writeFileSyncSpy: ReturnType<typeof vi.spyOn>;
-  let mkdirSyncSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     existsSyncSpy = vi.spyOn(fs, 'existsSync');
     readFileSyncSpy = vi.spyOn(fs, 'readFileSync');
     writeFileSyncSpy = vi.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
-    mkdirSyncSpy = vi.spyOn(fs, 'mkdirSync').mockImplementation(() => undefined);
+    // Mock mkdirSync to prevent actual directory creation during tests
+    vi.spyOn(fs, 'mkdirSync').mockImplementation(() => undefined);
   });
 
   afterEach(() => {

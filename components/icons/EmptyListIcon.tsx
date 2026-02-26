@@ -1,7 +1,18 @@
+/**
+ * EmptyListIcon component - SVG clipboard icon for empty state.
+ * @module components/icons/EmptyListIcon
+ */
+
+/** Common props for icon components */
 interface IconProps {
   className?: string;
 }
 
+/**
+ * Renders an empty list/clipboard icon.
+ * @param props - Icon properties
+ * @param props.className - CSS class names for styling (default: 'w-16 h-16')
+ */
 export default function EmptyListIcon({ className = 'w-16 h-16' }: IconProps) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">

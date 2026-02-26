@@ -1,5 +1,10 @@
 'use client';
 
+/**
+ * Home page component - Main expense tracker interface.
+ * @module app/page
+ */
+
 import { useState, useEffect } from 'react';
 import { Expense } from '@/lib/types';
 import { useExpenses } from '@/hooks/useExpenses';
@@ -8,6 +13,10 @@ import ExpenseForm from '@/components/ExpenseForm';
 import ExpenseList from '@/components/ExpenseList';
 import TotalSpending from '@/components/TotalSpending';
 
+/**
+ * Home page component that serves as the main expense tracker interface.
+ * Coordinates expense and category state through custom hooks.
+ */
 export default function Home() {
   const {
     expenses,

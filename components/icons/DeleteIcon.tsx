@@ -1,7 +1,18 @@
+/**
+ * DeleteIcon component - SVG trash icon for delete actions.
+ * @module components/icons/DeleteIcon
+ */
+
+/** Common props for icon components */
 interface IconProps {
   className?: string;
 }
 
+/**
+ * Renders a delete/trash icon.
+ * @param props - Icon properties
+ * @param props.className - CSS class names for styling (default: 'w-5 h-5')
+ */
 export default function DeleteIcon({ className = 'w-5 h-5' }: IconProps) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
