@@ -36,21 +36,24 @@ page.tsx (orchestrator)
 - Amounts: Stored as numbers, displayed with `.toFixed(2)`
 - IDs: Generated as `${Date.now()}-${randomString}`
 
-### Testing Considerations
-- Components are 'use client' - need React testing environment
-- API routes use Node.js fs module - need mocking or temp directories
-- No existing test infrastructure
-- ExpenseForm has complex logic: validation, edit mode, form reset
+### Testing Strategy
+- **Framework**: Vitest (faster, ESM-native, better TypeScript support for Next.js 16+)
+- **Priority Areas**: API routes > storage layer > hooks > form validation > calculations
+- **Mocking**: Use in-memory fs for storage tests, global fetch for hook tests
+- **Test Location**: `__tests__/` directories parallel to source files
+- See `testing-patterns.md` for detailed patterns
 
 ## File Organization
 - `/app` - Next.js App Router pages and API routes
 - `/components` - React client components
 - `/lib` - Shared utilities and types
+- `/hooks` - Custom React hooks
 - `/data` - JSON persistence (gitignored after initial commit)
+- `/__tests__/` - Test files (unit and integration)
 
 ## Dependencies
 - Next.js 16.1.6
 - React 19.2.3
 - TypeScript 5
 - Tailwind CSS 4
-- No test libraries installed yet
+- Path aliases: `@/*` maps to project root
