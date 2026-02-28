@@ -6,16 +6,18 @@
 /** Common props for icon components */
 interface IconProps {
   className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
  * Renders an empty list/clipboard icon.
  * @param props - Icon properties
  * @param props.className - CSS class names for styling (default: 'w-16 h-16')
+ * @param props.style - Inline styles for the icon
  */
-export default function EmptyListIcon({ className = 'w-16 h-16' }: IconProps) {
+export default function EmptyListIcon({ className = 'w-16 h-16', style }: IconProps) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className={className} style={style} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

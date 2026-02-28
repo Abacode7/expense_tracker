@@ -1,72 +1,153 @@
 'use client';
 
 /**
- * ExpenseItem component for displaying a single expense entry.
+ * ExpenseItem component - Elegant individual expense row.
  * @module components/ExpenseItem
  */
 
+import { useState } from 'react';
 import { Expense } from '@/lib/types';
 import { EditIcon, DeleteIcon } from './icons';
 
-/** Props for the ExpenseItem component */
 interface ExpenseItemProps {
   expense: Expense;
   onEdit: (expense: Expense) => void;
   onDelete: (id: string) => void;
 }
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Food: 'bg-orange-100 text-orange-800',
-  Transport: 'bg-blue-100 text-blue-800',
-  Entertainment: 'bg-purple-100 text-purple-800',
-  Bills: 'bg-red-100 text-red-800',
-  Shopping: 'bg-pink-100 text-pink-800',
-  Healthcare: 'bg-green-100 text-green-800',
-  Other: 'bg-gray-100 text-gray-800',
+const CATEGORY_STYLES: Record<string, { bg: string; text: string; icon: string }> = {
+  Food: { bg: '#FFF7ED', text: '#C2410C', icon: '🍽️' },
+  Transport: { bg: '#EFF6FF', text: '#1D4ED8', icon: '🚗' },
+  Entertainment: { bg: '#FAF5FF', text: '#7E22CE', icon: '🎬' },
+  Bills: { bg: '#FEF2F2', text: '#B91C1C', icon: '📄' },
+  Shopping: { bg: '#FDF2F8', text: '#BE185D', icon: '🛍️' },
+  Healthcare: { bg: '#F0FDF4', text: '#15803D', icon: '💊' },
+  Other: { bg: '#FAF7F2', text: '#6B6B6B', icon: '📦' },
 };
 
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
 export default function ExpenseItem({ expense, onEdit, onDelete }: ExpenseItemProps) {
-  const categoryColor = CATEGORY_COLORS[expense.category] || CATEGORY_COLORS.Other;
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const categoryStyle = CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.Other;
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    await onDelete(expense.id);
+  };
+
+  const formatAmount = (amount: number) => {
+    const [dollars, cents] = amount.toFixed(2).split('.');
+    return { dollars, cents };
+  };
+
+  const amountParts = formatAmount(expense.amount);
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200 hover:bg-gray-50 transition-colors">
-      <div className="flex-1">
-        <div className="flex items-center gap-3">
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColor}`}>
-            {expense.category}
-          </span>
-          <span className="text-sm text-gray-500">{formatDate(expense.date)}</span>
+    <div
+      className={`group flex items-center justify-between px-6 py-4 transition-all duration-200 ${
+        isDeleting ? 'opacity-50 scale-98' : ''
+      }`}
+      style={{
+        borderBottom: '1px solid #E8E4DE',
+        background: '#FFFFFF'
+      }}
+      onMouseEnter={() => {}}
+      onMouseLeave={() => setShowConfirm(false)}
+    >
+      {/* Left side - Category and description */}
+      <div className="flex items-center gap-4 min-w-0 flex-1">
+        {/* Category icon */}
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0"
+          style={{ background: categoryStyle.bg }}
+        >
+          {categoryStyle.icon}
         </div>
-        <p className="mt-1 text-gray-800 font-medium">{expense.description}</p>
+
+        {/* Description and category */}
+        <div className="min-w-0">
+          <p
+            className="font-medium truncate"
+            style={{ color: '#2C2C2C' }}
+          >
+            {expense.description}
+          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span
+              className="text-xs font-medium px-2 py-0.5 rounded-full"
+              style={{
+                background: categoryStyle.bg,
+                color: categoryStyle.text
+              }}
+            >
+              {expense.category}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <span className="text-lg font-semibold text-gray-900">
-          ${expense.amount.toFixed(2)}
-        </span>
-        <div className="flex gap-2">
-          <button
-            onClick={() => onEdit(expense)}
-            className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-            aria-label="Edit expense"
+      {/* Right side - Amount and actions */}
+      <div className="flex items-center gap-4 ml-4">
+        {/* Amount */}
+        <div className="text-right">
+          <p
+            className="text-lg font-semibold tabular-nums"
+            style={{ color: '#2C2C2C' }}
           >
-            <EditIcon />
-          </button>
-          <button
-            onClick={() => onDelete(expense.id)}
-            className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-            aria-label="Delete expense"
-          >
-            <DeleteIcon />
-          </button>
+            <span style={{ color: '#6B6B6B' }}>$</span>
+            {amountParts.dollars}
+            <span style={{ color: '#6B6B6B', fontSize: '0.875em' }}>
+              .{amountParts.cents}
+            </span>
+          </p>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          {showConfirm ? (
+            <>
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-all duration-200 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #DC2626 0%, #EF4444 100%)'
+                }}
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
+                style={{
+                  background: '#FAF7F2',
+                  color: '#6B6B6B'
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => onEdit(expense)}
+                className="p-2 rounded-lg transition-all duration-200 hover:scale-110 hover:bg-green-50"
+                style={{ color: '#2D5A47' }}
+                aria-label="Edit expense"
+              >
+                <EditIcon className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowConfirm(true)}
+                className="p-2 rounded-lg transition-all duration-200 hover:scale-110 hover:bg-red-50"
+                style={{ color: '#C67D5E' }}
+                aria-label="Delete expense"
+              >
+                <DeleteIcon className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
