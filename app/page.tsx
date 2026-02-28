@@ -78,26 +78,15 @@ export default function Home() {
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Header */}
         <header className="mb-12 animate-fade-in-up">
-          <div className="flex items-baseline gap-3">
-            <h1
-              className="text-4xl md:text-5xl font-normal tracking-tight"
-              style={{
-                fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                color: '#1A3A2F'
-              }}
-            >
-              Expenses
-            </h1>
-            <span
-              className="text-sm font-medium px-2.5 py-1 rounded-full"
-              style={{
-                background: '#B8D4B0',
-                color: '#1A3A2F'
-              }}
-            >
-              {new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-            </span>
-          </div>
+          <h1
+            className="text-4xl md:text-5xl font-normal tracking-tight"
+            style={{
+              fontFamily: 'var(--font-dm-serif), Georgia, serif',
+              color: '#1A3A2F'
+            }}
+          >
+            Expenses
+          </h1>
           <p
             className="mt-3 text-lg"
             style={{ color: '#6B6B6B' }}

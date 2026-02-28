@@ -18,17 +18,21 @@ export default function TotalSpending({ expenses }: TotalSpendingProps) {
     [expenses]
   );
 
-  const thisMonthTotal = useMemo(() => {
+  const { thisMonthTotal, currentMonthLabel } = useMemo(() => {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
 
-    return expenses
+    const total = expenses
       .filter((expense) => {
         const date = new Date(expense.date);
         return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
       })
       .reduce((sum, expense) => sum + expense.amount, 0);
+
+    const label = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    return { thisMonthTotal: total, currentMonthLabel: label };
   }, [expenses]);
 
   const formatCurrency = (amount: number) => {
@@ -89,7 +93,7 @@ export default function TotalSpending({ expenses }: TotalSpendingProps) {
           style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}
         >
           <div>
-            <p className="text-xs text-white/50 uppercase tracking-wider mb-1">This Month</p>
+            <p className="text-xs text-white/50 uppercase tracking-wider mb-1">{currentMonthLabel}</p>
             <p className="text-lg font-medium text-white">
               ${monthParts.dollars}
               <span className="text-white/60">.{monthParts.cents}</span>
